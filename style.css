@@ -1,0 +1,27 @@
+@import "node_modules/ol/ol.css";
+html,
+body {
+    margin: 0;
+    height: 100%;
+}
+
+#map {
+    /* position: absolute; */
+    top: 0;
+    bottom: 0;
+    height: 600px;
+    width: 100%;
+}
+
+.rotate-north {
+    top: 65px;
+    left: .5em;
+}
+
+.ol-touch .rotate-north {
+    top: 80px;
+}
+
+.card-link {
+    text-decoration: none;
+}
