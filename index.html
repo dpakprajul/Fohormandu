@@ -39,7 +39,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="text-align: center;">
 
                     <!-- card -->
                     <div class="row">
@@ -50,7 +50,7 @@
                                     <h5 class="card-title">Point</h5>
                                     <h6 class="card-subtitle mb-2 text-muted">Give the location of All the Doko Location</h6>
                                     <p class="card-text"><i class="fas fa-map-marker-alt fa-2x"></i></p>
-                                    <a onclick="startDraw('Point')" class="card-link">Add Point</a>
+                                    <a id="hero" class="card-link1">Add Point</a>
 
                                 </div>
                             </div>
@@ -63,7 +63,7 @@
                                     <h5 class="card-title">Line</h5>
                                     <h6 class="card-subtitle mb-2 text-muted">Give the location of the Road and river</h6>
                                     <p class="card-text"><i class="fas fa-road fa-2x"></i></p>
-                                    <a onclick="startDraw('Line')" class="card-link">Add Line</a>
+                                    <a class="card-link2">Add Line</a>
 
                                 </div>
                             </div>
@@ -75,7 +75,7 @@
                                     <h5 class="card-title">Polygon</h5>
                                     <h6 class="card-subtitle mb-2 text-muted">Make an area where there needs to be cleaned</h6>
                                     <p class="card-text"> <i class="fas fa-draw-polygon fa-2x"></i></p>
-                                    <a onclick="startDraw('Polygon')" class="card-link">Add Polygon</a>
+                                    <a class="card-link3">Add Polygon</a>
 
                                 </div>
                             </div>
@@ -87,6 +87,18 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
+                    <form class="form-inline">
+                        <label for="type">Geometry type: &nbsp;</label>
+                        <select class="form-control mr-2 mb-2 mt-2" id="type">
+                        <option value="Point">Point</option>
+                        <option value="LineString">LineString</option>
+                        <option value="Polygon">Polygon</option>
+                        <option value="Circle">Circle</option>
+                        <option value="None">None</option>
+                      </select>
+                        <input class="form-control mr-2 mb-2 mt-2" type="button" value="Undo" id="undo">
+                    </form>
+
                 </div>
             </div>
         </div>
@@ -95,11 +107,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script type="module" src="./main.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script type="module" src="./draw.js"></script>
     <script>
-        function startDraw(option) {
-            console.log(option);
+        function startDraw(geomType) {
+            selectedGeomType = geomType
+            draw = new ol.interaction.Draw({
+                type: geomType,
+
+            })
+            $('#startdrawModal').modal('hide')
+
+
         }
     </script>
+
 </body>
 
 </html>
