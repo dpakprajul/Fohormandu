@@ -1,5 +1,6 @@
 import './style.css';
 import { Map, View } from 'ol';
+import { CartoDB } from 'ol/source';
 
 import { ZoomToExtent, Control, defaults as defaultControls, Zoom } from 'ol/control';
 import Draw from 'ol/interaction/Draw';
@@ -7,6 +8,7 @@ import 'ol/ol.css';
 import { OSM, Vector as VectorSource } from 'ol/source';
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
 import TileJSON from 'ol/source/TileJSON';
+
 
 
 class RotateNorthControl extends Control {
@@ -38,6 +40,22 @@ class RotateNorthControl extends Control {
     }
 }
 
+const mapConfig = {
+    'layers': [{
+        'type': 'cartodb',
+        'options': {
+            'cartocss_version': '2.1.1',
+            'cartocss': '#layer { polygon-fill: #F00; }',
+            'sql': 'select * from european_countries_e where area > 0',
+        },
+    }, ],
+};
+
+const cartoDBSource = new CartoDB({
+    account: 'documentation',
+    config: mapConfig,
+});
+
 const raster = new TileLayer({
     source: new OSM(),
 });
@@ -65,7 +83,14 @@ const map = new Map({
 
     )]).extend([new RotateNorthControl()]),
 
-    layers: [raster, rasterLayer, vector],
+    layers: [new TileLayer({
+            source: new OSM(),
+        }),
+        new TileLayer({
+            source: cartoDBSource,
+        }),
+        rasterLayer
+    ],
     target: 'map',
     view: new View({
         center: [-11000000, 4600000],
@@ -123,6 +148,7 @@ document.getElementById('undo').addEventListener('click', function() {
 
 addInteraction();
 
+
 const opacityInput = document.getElementById('opacity-input');
 const opacityOutput = document.getElementById('opacity-output');
 const check = document.getElementById('check');
@@ -143,6 +169,16 @@ opacityInput.addEventListener('change', update);
 
 
 update();
+
+function setArea(n) {
+    mapConfig.layers[0].options.sql =
+        'select * from european_countries_e where area > ' + n;
+    cartoDBSource.setConfig(mapConfig);
+}
+
+document.getElementById('country-area').addEventListener('change', function() {
+    setArea(this.value);
+});
 
 
 
